@@ -6,11 +6,12 @@ class StopWatch(Frame):
     def __init__(self, parent=None, **kw):        
         Frame.__init__(self, parent, kw)
         self._start = 0.0        
-        self._elapsedtime = 5.0
+        self._elapsedtime = 30.0
         self._running = 0
         self._counter = 0
         self._break = 0
         self.counterstr = StringVar()
+        self.breakstr = StringVar()
         self.timestr = StringVar()               
         self.makeWidgets()      
 
@@ -21,29 +22,34 @@ class StopWatch(Frame):
         l.pack(fill=X, expand=NO, pady=2, padx=2)
         c = Label(self, textvariable=self.counterstr)
         self.counterstr.set("Count: " + str(self._counter))
-        c.pack(fill=X, expand=NO, pady=2, padx=2)                      
+        c.pack(fill=X, expand=NO, pady=2, padx=2)
+        b = Label(self, textvariable=self.breakstr)
+        self.breakstr.set("Break: False")
+        b.pack(fill=X, expand=NO, pady=2, padx=2) 
     
     def _update(self):
         self._elapsedtime = time.time() - self._start
-        if (10 - self._counter - self._elapsedtime < 0 and self._break == 0):
+        if (60 - self._counter - self._elapsedtime < 0 and self._break == 0):
             self._counter += 1
             self.counterstr.set("Count: " + str(self._counter))
-            self._elapsedtime = 5.0
+            self.breakstr.set("Break: True")
+            self._elapsedtime = 30.0
             self._start = time.time() - self._elapsedtime
             self._break = 1
             print 'on break'
-        if (10 - self._elapsedtime < 0 and self._break == 1):
-            self._elapsedtime = 5.0
+        if (60 - self._elapsedtime < 0 and self._break == 1):
+            self._elapsedtime = 30.0
             self._start = time.time() - self._elapsedtime
             self._break = 0
+            self.breakstr.set("Break: False")
             print "off break"
-        if (self._counter == 5):
+        if (self._counter == 30):
             self.Stop()
             return
         if self._break == 0 :
-            self._setTime(10 - self._counter - self._elapsedtime)
+            self._setTime(60 - self._counter - self._elapsedtime)
         else:
-            self._setTime(10 - self._elapsedtime)
+            self._setTime(60 - self._elapsedtime)
         self._timer = self.after(5, self._update)
     
     def _setTime(self, elap):
@@ -58,25 +64,29 @@ class StopWatch(Frame):
         if not self._running:            
             self._start = time.time() - self._elapsedtime
             self._update()
-            self._running = 1        
+            self._running = 1
+            self.counterstr.set("Count: " + str(0))
+            self.breakstr.set("Break: False")        
     
     def Stop(self):                                    
         """ Stop the stopwatch, ignore if stopped. """
         if self._running:
             self.after_cancel(self._timer)            
             self._elapsedtime = time.time() - self._start    
-            self._setTime(5)
+            self._setTime(30)
             self._running = 0
             self._counter = 0
             self._break = 0
+            self.breakstr.set("Break: Stopped") 
     
     def Reset(self):                                  
         """ Reset the stopwatch. """
         self._start = time.time()         
-        self._elapsedtime = 5.0    
+        self._elapsedtime = 30.0    
         self._setTime(self._elapsedtime)
         self.counter = 0
         self.counterstr.set("Count: " + str(self._counter))
+        self.breakstr.set("Break: Stopped")
         
         
 def main():
