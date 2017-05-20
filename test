@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<body>
+
+<h1 title="Titles are seen when a mouse hovers over the HTML element.">This is a header.</h1>
+
+<p>This is a paragraph within the header.</p>
+
+<h2>This is header #2.</h2>
+
+<h1>This is another header #1. Header sizes are based upon their numbering, with 1 being the largest and 6 being the smallest.</h1>
+
+<a href="https://www.youtube.com">This is a link to YouTube.</a>
+<br>
+<img src="birb watermelon.jpg" alt="birb love" width="400" height="400">
+
+</body>
+</html>
